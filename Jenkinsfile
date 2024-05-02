@@ -29,5 +29,14 @@ pipeline {
       }
     }
 
+    stage('Push image') {
+      environment {
+        DOCKERHUB_USERNAME = 'sanjayimages'
+      }
+      steps {
+        sh 'docker push $DOCKERHUB_USERNAME/curriculum:latest'
+      }
+    }
+
   }
 }
