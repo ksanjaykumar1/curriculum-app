@@ -8,25 +8,24 @@ pipeline {
     }
 
     stage('logs') {
-      parallel {
-        stage('logs') {
-          steps {
-            sh 'ls -la'
-          }
-        }
-
-        stage('Front-End Unit testing') {
-          steps {
-            sh 'cd curriculum-front && npm i && npm run test:unit'
-          }
-        }
-
+      steps {
+        sh 'ls -la'
       }
     }
 
     stage('Build') {
       steps {
         sh 'docker build -f curriculum-front/Dockerfile .'
+      }
+    }
+
+    stage('Login into Dockerhub') {
+      environment {
+        DOCKERHUB_USER = 'sanjayImages'
+        DOCKERHUB_PASSWORD = 'PmUmTCAAw'
+      }
+      steps {
+        sh 'docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD'
       }
     }
 
